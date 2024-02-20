@@ -578,15 +578,24 @@ def find_duplicate_images(folder_data, directory,folder_path,selected_folder):
                 relative_original = os.path.relpath(folder_filename, os.path.join(MEDIA_ROOT, 'Upload'))
                 relative_duplicate = os.path.relpath(path, os.path.join(MEDIA_ROOT, 'Upload'))
 
-                split_relative_original = relative_original.split("/")
-                split_relative_duplicate = relative_duplicate.split("/")
+		# getting the path    and split path
+		split_relative_original = relative_original.split("/")
+		split_relative_duplicate = relative_duplicate.split("/")
 
-                # Joining all parts except the last one
-                result_relative_original = "/".join(split_relative_original[1:-1])
-                result_relative_duplicate = "/".join(split_relative_duplicate[1:-1])
-                
-                if relative_original!=relative_duplicate and result_relative_original==result_relative_duplicate:
-                    print("relative_original =", result_relative_original)
+		#   original and duplicate path
+		result_relative_original = "/".join(split_relative_original[1:])
+		result_relative_duplicate = "/".join(split_relative_duplicate[1:])
+		
+		# file name
+		filename_original = split_relative_original[-1]
+		filename_duplicate = split_relative_duplicate[-1]
+		
+		# compare the shop name
+		first_four_digits_original = filename_original.split('_')[0]
+		first_four_digits_duplicate = filename_duplicate.split('_')[0]
+		
+		if relative_original!=relative_duplicate and (result_relative_original==result_relative_duplicate  and first_four_digits_original == first_four_digits_duplicate ):
+		    print("relative_original =", result_relative_original)
                     print("relative_duplicate =", result_relative_duplicate)
                     if compare_images_opencv(folder_file_content, path):
                         
